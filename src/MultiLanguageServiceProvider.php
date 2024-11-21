@@ -3,6 +3,9 @@
 namespace OpenAdmin\MultiLanguage;
 
 use Illuminate\Support\ServiceProvider;
+use OpenAdmin\MultiLanguage\Extensions\LangTab;
+use OpenAdmin\Admin\Facades\Admin;
+use OpenAdmin\Admin\Form;
 
 class MultiLanguageServiceProvider extends ServiceProvider
 {
@@ -26,8 +29,14 @@ class MultiLanguageServiceProvider extends ServiceProvider
             );
         }
 
+        Admin::booting(function () {
+            //Form::forget(['hasMany']);
+            Form::extend('langTab', LangTab::class);
+            //Form::extend('hasMany', HasMany::class);
+        });
+
         $this->app->booted(function () {
-            MultiLanguage::routes(__DIR__.'/../routes/web.php');
+            MultiLanguage::routes(__DIR__ . '/../routes/web.php');
         });
     }
 }
